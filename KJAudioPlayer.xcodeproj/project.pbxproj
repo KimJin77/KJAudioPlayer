@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B13E6131E98CFC5004517D4 /* KJSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13E6121E98CFC5004517D4 /* KJSlider.swift */; };
 		3B22536B1E928C6E004825BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B22536A1E928C6E004825BE /* AppDelegate.swift */; };
 		3B2253721E928C6E004825BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B2253711E928C6E004825BE /* Assets.xcassets */; };
 		3B2253751E928C6E004825BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B2253731E928C6E004825BE /* LaunchScreen.storyboard */; };
@@ -14,11 +15,11 @@
 		3B2253831E928C9B004825BE /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B22537E1E928C9B004825BE /* AudioPlayer.swift */; };
 		3B2253841E928C9B004825BE /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B22537F1E928C9B004825BE /* AudioViewController.swift */; };
 		3B2253851E928C9B004825BE /* KJAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2253801E928C9B004825BE /* KJAudioPlayer.swift */; };
-		3B2253861E928C9B004825BE /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2253821E928C9B004825BE /* PlayButton.swift */; };
 		3B2253881E928D82004825BE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2253871E928D82004825BE /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B13E6121E98CFC5004517D4 /* KJSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KJSlider.swift; sourceTree = "<group>"; };
 		3B2253671E928C6E004825BE /* KJAudioPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KJAudioPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B22536A1E928C6E004825BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B2253711E928C6E004825BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -28,7 +29,6 @@
 		3B22537E1E928C9B004825BE /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		3B22537F1E928C9B004825BE /* AudioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioViewController.swift; sourceTree = "<group>"; };
 		3B2253801E928C9B004825BE /* KJAudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KJAudioPlayer.swift; sourceTree = "<group>"; };
-		3B2253821E928C9B004825BE /* PlayButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
 		3B2253871E928D82004825BE /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,7 +79,7 @@
 		3B2253811E928C9B004825BE /* View */ = {
 			isa = PBXGroup;
 			children = (
-				3B2253821E928C9B004825BE /* PlayButton.swift */,
+				3B13E6121E98CFC5004517D4 /* KJSlider.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -159,10 +159,10 @@
 			files = (
 				3B2253881E928D82004825BE /* ViewController.swift in Sources */,
 				3B22536B1E928C6E004825BE /* AppDelegate.swift in Sources */,
-				3B2253861E928C9B004825BE /* PlayButton.swift in Sources */,
 				3B2253831E928C9B004825BE /* AudioPlayer.swift in Sources */,
 				3B2253851E928C9B004825BE /* KJAudioPlayer.swift in Sources */,
 				3B2253841E928C9B004825BE /* AudioViewController.swift in Sources */,
+				3B13E6131E98CFC5004517D4 /* KJSlider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,6 +320,7 @@
 				3B22537B1E928C6E004825BE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

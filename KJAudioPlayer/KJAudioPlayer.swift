@@ -23,7 +23,16 @@ class KJAudioPlayer: NSObject {
         var packetDuration: Double {
             return Double(audioStreamBasicDescription.mBytesPerPacket) / Double(sampleRate)
         }
-
+        var fileLength: Int = 0 				// 总文件大小
+		var audioDuration: (Int, Int) {		// 音频时长
+            guard dataOffset != 0, bitRate != 0 else {
+                return (0, 0)
+            }
+            let seconds = (fileLength - Int(dataOffset)) * 8 / Int(bitRate)
+            let minute: Int = seconds / 60
+            let second: Int = seconds % 60
+            return (minute, second)
+        }
     }
 
     // 播放、缓冲区
@@ -45,6 +54,10 @@ class KJAudioPlayer: NSObject {
         var inuseBuffer = [Bool](repeating: false, count: audioQueueBufferNums)	// 标注当前的缓冲是否等待播放
         var bufferUsed = 0		// 使用的buffer数
     }
+    
+    enum PlayerNotification: String {
+        case fetchDuration
+    }
 
 	var url: URL		// 音频文件URL
     lazy var internalThread: Thread = {
@@ -54,6 +67,7 @@ class KJAudioPlayer: NSObject {
         return unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
     }()	// 指针
     var inputStream: Unmanaged<CFReadStream>?	// 输入流
+    var httpHeader: CFDictionary? = nil
     var queueBuffersMutex = pthread_mutex_t()	// 开启线程锁
     var queueBufferReadyCondition = pthread_cond_t()	// 解锁条件
 
@@ -61,6 +75,12 @@ class KJAudioPlayer: NSObject {
 	var audioInfo = AudioInfo()
     var audioQueueBuffers = AudioQueueBuffers()
 	var discontinous = false
+
+    var duration: (String, String) {
+        let minute = audioInfo.audioDuration.0 < 10 ? "0" + String(audioInfo.audioDuration.0) : String(audioInfo.audioDuration.0)
+        let second = audioInfo.audioDuration.1 < 10 ? "0" + String(audioInfo.audioDuration.1) : String(audioInfo.audioDuration.1)
+        return (minute, second)
+    }
 
     /// 初始化方法
     ///
@@ -75,7 +95,7 @@ class KJAudioPlayer: NSObject {
     }
 
     /// 开始读取流数据
-    func startInternal () {
+    @objc private func startInternal () {
 		openReadStream()
 		pthread_mutex_init(&queueBuffersMutex, nil)
         pthread_cond_init(&queueBufferReadyCondition, nil)
@@ -87,8 +107,8 @@ class KJAudioPlayer: NSObject {
     }
 }
 
-
 // MARK: - Stream
+
 extension KJAudioPlayer {
     func openReadStream() {
 		synchronized(self) {
@@ -145,6 +165,14 @@ extension KJAudioPlayer {
     func handleEvent(_ eventType: CFStreamEventType, of stream: CFReadStream) {
         switch eventType {
 		case CFStreamEventType.hasBytesAvailable:
+            if httpHeader == nil {
+				let message: CFHTTPMessage = CFReadStreamCopyProperty(stream, CFStreamPropertyKey(rawValue: kCFStreamPropertyHTTPResponseHeader)) as! CFHTTPMessage
+                httpHeader = CFHTTPMessageCopyAllHeaderFields(message)?.takeUnretainedValue()
+                if let httpHeader = httpHeader as? [String: AnyObject] {
+					audioInfo.fileLength = Int(httpHeader["Content-Length"] as! String)!
+                }
+            }
+
             if audioInfo.audioFileStream == nil {
                 // 初始化文件流
 				status = AudioFileStreamOpen(pointee, { (clientData, audioFileStream, propertyID, ioFlag) in
@@ -224,6 +252,7 @@ extension KJAudioPlayer {
                     print("\(#line)：获取偏移量出错")
                     return
                 }
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: PlayerNotification.fetchDuration.rawValue), object: nil)
             case kAudioFileStreamProperty_AudioDataByteCount:	// 音频数据的总的字节数
                 self.status = AudioFileStreamGetProperty(aStream, kAudioFileStreamProperty_AudioDataByteCount, &dataSize, &self.audioInfo.byteCount)
                 if self.status != noErr {
